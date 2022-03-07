@@ -2,9 +2,6 @@ from math import sqrt
 
 from PyQt5 import QtWidgets
 from PyQt5.Qt import Qt
-from PyQt5.QtCore import QMutex
-
-from Player import Player
 
 
 
@@ -23,6 +20,7 @@ class Graphics(QtWidgets.QMainWindow):
         self.centralWidget().setLayout(self.horizontal)
         self.labyrinth = labyrinth
         self.player = player
+        self.square_size = 30
 
         self.init_window()
         self.add_squares()
@@ -64,11 +62,19 @@ class Graphics(QtWidgets.QMainWindow):
     def keyPressEvent(self, event):
 
         if event.key() == Qt.Key_W:
-            self.player.setPos(float(1 * 30), float(1 * 30))
-        if event.key() == Qt.Key_A:
-            self.player.setPos(float(1 * 30), float(2 * 30))
+            if self.player.location[1] != 0:
+                self.player.location[1] -= self.square_size
+                self.player.setPos(float(self.player.location[0]), float(self.player.location[1]))
         if event.key() == Qt.Key_S:
-            self.player.setPos(float(2 * 30), float(1 * 30))
-        if event.key() == Qt.Key_Down:
-            self.player.setPos(float(2 * 30), float(2 * 30))
+            if self.player.location[1] != 60:
+                self.player.location[1] += self.square_size
+                self.player.setPos(float(self.player.location[0]), float(self.player.location[1]))
+        if event.key() == Qt.Key_A:
+            if self.player.location[0] != 0:
+                self.player.location[0] -= self.square_size
+                self.player.setPos(float(self.player.location[0]), float(self.player.location[1]))
+        if event.key() == Qt.Key_D:
+            if self.player.location[0] != 60:
+                self.player.location[0] += self.square_size
+                self.player.setPos(float(self.player.location[0]), float(self.player.location[1]))
 

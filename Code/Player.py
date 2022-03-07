@@ -1,5 +1,5 @@
 from PyQt5 import QtWidgets, QtGui, QtCore
-from PyQt5.Qt import Qt
+
 
 class Player(QtWidgets.QGraphicsPolygonItem):
     def __init__(self, square_size):
@@ -11,6 +11,7 @@ class Player(QtWidgets.QGraphicsPolygonItem):
         brush = QtGui.QBrush(1)  # 1 for even fill
         self.setBrush(brush)
         self.constructTriangleVertices()
+        self.location = [0, 0]
 
     def constructTriangleVertices(self):
         """
@@ -35,8 +36,3 @@ class Player(QtWidgets.QGraphicsPolygonItem):
         # Set the origin of transformations to the center of the triangle.
         # This makes it easier to rotate this Item.
         self.setTransformOriginPoint(self.square_size/2, self.square_size/2)
-
-    def position(self):
-        self.setPos(float(1 * 30), float(1 * 30))
-
-
