@@ -3,6 +3,7 @@ import sys
 from Graphics import Graphics
 from PyQt5.QtWidgets import QApplication
 from Labyrinth import Labyrinth
+from Player import Player
 
 
 def main():
@@ -22,7 +23,8 @@ def main():
 
     global app
     app = QApplication(sys.argv)
-    graphics = Graphics(g)
+    p = Player(30)
+    graphics = Graphics(g, p)
 
     sys.exit(app.exec_())
 

@@ -1,19 +1,42 @@
-from PyQt5 import QtWidgets
+from PyQt5 import QtWidgets, QtGui, QtCore
 from PyQt5.Qt import Qt
 
-class Player():
-    def __init__(self):
-        self.location = None
+class Player(QtWidgets.QGraphicsPolygonItem):
+    def __init__(self, square_size):
+        # Call init of the parent object
+        super(Player, self).__init__()
 
-    def keyPressEvent(self, event):
-        if event.key() == Qt.Key_down:
-            print("D")
+        # Do other stuff
+        self.square_size = square_size
+        brush = QtGui.QBrush(1)  # 1 for even fill
+        self.setBrush(brush)
+        self.constructTriangleVertices()
 
-        if event.key() == Qt.Key_Up:
-            print("U")
+    def constructTriangleVertices(self):
+        """
+        This method sets the shape of this item into a triangle.
 
-        if event.key() == Qt.Key_Left:
-            print("L")
+        The QGraphicsPolygonItem can be in the shape of any polygon.
+        We use triangles to represent robots, as it makes it easy to
+        show the current facing of the robot.
+        """
+        # Create a new QPolygon object
+        triangle = QtGui.QPolygonF()
 
-        if event.key() == Qt.Key_Right:
-            print("R")
+        # Add the corners of a triangle to the the polygon object
+        triangle.append(QtCore.QPointF(self.square_size/2, 0)) # Tip
+        triangle.append(QtCore.QPointF(0, self.square_size)) # Bottom-left
+        triangle.append(QtCore.QPointF(self.square_size, self.square_size)) # Bottom-right
+        triangle.append(QtCore.QPointF(self.square_size/2, 0)) # Tip
+
+        # Set this newly created polygon as this Item's polygon.
+        self.setPolygon(triangle)
+
+        # Set the origin of transformations to the center of the triangle.
+        # This makes it easier to rotate this Item.
+        self.setTransformOriginPoint(self.square_size/2, self.square_size/2)
+
+    def position(self):
+        self.setPos(float(1 * 30), float(1 * 30))
+
+

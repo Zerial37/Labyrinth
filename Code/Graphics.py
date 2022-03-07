@@ -2,6 +2,10 @@ from math import sqrt
 
 from PyQt5 import QtWidgets
 from PyQt5.Qt import Qt
+from PyQt5.QtCore import QMutex
+
+from Player import Player
+
 
 
 """"
@@ -12,16 +16,20 @@ Mukana myös paikka napeille, kuten robots.py:ssa
 
 class Graphics(QtWidgets.QMainWindow):
 
-    def __init__(self, labyrinth):
+    def __init__(self, labyrinth, player):
         super().__init__()
         self.setCentralWidget(QtWidgets.QWidget())
         self.horizontal = QtWidgets.QHBoxLayout()
         self.centralWidget().setLayout(self.horizontal)
         self.labyrinth = labyrinth
+        self.player = player
 
         self.init_window()
         self.add_squares()
+        self.add_player()
 
+    def add_player(self):
+        self.scene.addItem(self.player)
 
     def add_squares(self):
         sum_x = 0
@@ -52,3 +60,15 @@ class Graphics(QtWidgets.QMainWindow):
         self.view.adjustSize()
         self.view.show()
         self.horizontal.addWidget(self.view)
+
+    def keyPressEvent(self, event):
+
+        if event.key() == Qt.Key_W:
+            self.player.setPos(float(1 * 30), float(1 * 30))
+        if event.key() == Qt.Key_A:
+            self.player.setPos(float(1 * 30), float(2 * 30))
+        if event.key() == Qt.Key_S:
+            self.player.setPos(float(2 * 30), float(1 * 30))
+        if event.key() == Qt.Key_Down:
+            self.player.setPos(float(2 * 30), float(2 * 30))
+
