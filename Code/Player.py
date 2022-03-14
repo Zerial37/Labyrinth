@@ -1,13 +1,16 @@
+from math import sqrt
 from PyQt5 import QtWidgets, QtGui, QtCore
 
 
+
 class Player(QtWidgets.QGraphicsPolygonItem):
-    def __init__(self, square_size):
+    def __init__(self, square_size, labyrinth):
         # Call init of the parent object
         super(Player, self).__init__()
 
         # Do other stuff
         self.square_size = square_size
+        self.labyrinth = labyrinth
         brush = QtGui.QBrush(1)  # 1 for even fill
         self.setBrush(brush)
         self.constructTriangleVertices()
@@ -36,3 +39,10 @@ class Player(QtWidgets.QGraphicsPolygonItem):
         # Set the origin of transformations to the center of the triangle.
         # This makes it easier to rotate this Item.
         self.setTransformOriginPoint(self.square_size/2, self.square_size/2)
+
+    def get_square(self):
+        x = self.location[0] / self.square_size
+        y = self.location[0] / self.square_size
+        lab_columns = int(sqrt(len(self.labyrinth.adjMatrix)))
+        place = lab_columns * y + x
+        return place

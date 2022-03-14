@@ -29,3 +29,9 @@ class Labyrinth():
     # Print the matrix
     def print_matrix(self):
         print(self.adjMatrix)
+
+    def has_edge(self, v1, v2):
+        if self.adjMatrix[v1][v2] == 1:
+            return True
+        else:
+            return False

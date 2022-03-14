@@ -21,6 +21,7 @@ class Graphics(QtWidgets.QMainWindow):
         self.labyrinth = labyrinth
         self.player = player
         self.square_size = 30
+        self.columns = int(sqrt(len(self.labyrinth.adjMatrix)))
 
         self.init_window()
         self.add_squares()
@@ -63,18 +64,29 @@ class Graphics(QtWidgets.QMainWindow):
 
         if event.key() == Qt.Key_W:
             if self.player.location[1] != 0:
-                self.player.location[1] -= self.square_size
-                self.player.setPos(float(self.player.location[0]), float(self.player.location[1]))
+                if self.labyrinth.has_edge(self.get_square(), self.get_square() - int(self.columns)):
+                    self.player.location[1] -= self.square_size
+                    self.player.setPos(float(self.player.location[0]), float(self.player.location[1]))
         if event.key() == Qt.Key_S:
-            if self.player.location[1] != 60:
-                self.player.location[1] += self.square_size
-                self.player.setPos(float(self.player.location[0]), float(self.player.location[1]))
+            if self.player.location[1] != int(sqrt(len(self.labyrinth.adjMatrix) - 1)) * self.square_size:
+                if self.labyrinth.has_edge(self.get_square(), self.get_square() + int(self.columns)):
+                    self.player.location[1] += self.square_size
+                    self.player.setPos(float(self.player.location[0]), float(self.player.location[1]))
         if event.key() == Qt.Key_A:
             if self.player.location[0] != 0:
-                self.player.location[0] -= self.square_size
-                self.player.setPos(float(self.player.location[0]), float(self.player.location[1]))
+                if self.labyrinth.has_edge(self.get_square(), self.get_square() - 1):
+                    self.player.location[0] -= self.square_size
+                    self.player.setPos(float(self.player.location[0]), float(self.player.location[1]))
         if event.key() == Qt.Key_D:
-            if self.player.location[0] != 60:
-                self.player.location[0] += self.square_size
-                self.player.setPos(float(self.player.location[0]), float(self.player.location[1]))
+            if self.player.location[0] != int(sqrt(len(self.labyrinth.adjMatrix) - 1)) * self.square_size:
+                if self.labyrinth.has_edge(self.get_square(), self.get_square() + 1):
+                    self.player.location[0] += self.square_size
+                    self.player.setPos(float(self.player.location[0]), float(self.player.location[1]))
+
+    def get_square(self):
+        x = self.player.location[0] / self.square_size
+        y = self.player.location[1] / self.square_size
+        lab_columns = int(sqrt(len(self.labyrinth.adjMatrix)))
+        place = lab_columns * y + x
+        return int(place)
 
