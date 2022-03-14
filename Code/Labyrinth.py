@@ -31,6 +31,8 @@ class Labyrinth():
         print(self.adjMatrix)
 
     def has_edge(self, v1, v2):
+        if v1 < 0 or v2 < 0 or v1 > self.size - 1 or v2 > self.size - 1:
+            return False
         if self.adjMatrix[v1][v2] == 1:
             return True
         else:

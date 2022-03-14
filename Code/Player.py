@@ -42,7 +42,7 @@ class Player(QtWidgets.QGraphicsPolygonItem):
 
     def get_square(self):
         x = self.location[0] / self.square_size
-        y = self.location[0] / self.square_size
+        y = self.location[1] / self.square_size
         lab_columns = int(sqrt(len(self.labyrinth.adjMatrix)))
         place = lab_columns * y + x
-        return place
+        return int(place)

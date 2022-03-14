@@ -1,6 +1,6 @@
 from math import sqrt
 
-from PyQt5 import QtWidgets
+from PyQt5 import QtWidgets, QtGui
 from PyQt5.Qt import Qt
 
 
@@ -35,9 +35,26 @@ class Graphics(QtWidgets.QMainWindow):
         sum_y = 0
         for x in range(int(sqrt(len(self.labyrinth.adjMatrix)))):
             for y in range(int(sqrt(len(self.labyrinth.adjMatrix)))):
-                item = QtWidgets.QGraphicsRectItem(float(sum_x * 30), float(sum_y * 30),
-                                                   float(30), float(30))
+                item = QtWidgets.QGraphicsRectItem(float(sum_x * self.square_size), float(sum_y * self.square_size),
+                                                   float(self.square_size), float(self.square_size))
                 self.scene.addItem(item)
+                place = self.columns * sum_x + sum_y
+                if self.labyrinth.has_edge(place, place + 1):
+                    line = QtWidgets.QGraphicsLineItem(float((sum_y + 1) * self.square_size),
+                                                       float(sum_x * self.square_size + 1),
+                                                       float((sum_y + 1) * self.square_size),
+                                                       float((sum_x + 1) * self.square_size - 1))
+                    line.setPen(QtGui.QColor(255, 255, 255))
+                    line.setZValue(1)
+                    self.scene.addItem(line)
+                if self.labyrinth.has_edge(place, place + self.columns):
+                    line = QtWidgets.QGraphicsLineItem(float(sum_y * self.square_size + 1),
+                                                       float((sum_x + 1) * self.square_size),
+                                                       float((sum_y + 1) * self.square_size - 1),
+                                                       float((sum_x + 1) * self.square_size))
+                    line.setPen(QtGui.QColor(255, 255, 255))
+                    line.setZValue(1)
+                    self.scene.addItem(line)
                 sum_y += 1
             sum_y = 0
             sum_x += 1
@@ -64,29 +81,22 @@ class Graphics(QtWidgets.QMainWindow):
 
         if event.key() == Qt.Key_W:
             if self.player.location[1] != 0:
-                if self.labyrinth.has_edge(self.get_square(), self.get_square() - int(self.columns)):
+                if self.labyrinth.has_edge(self.player.get_square(), self.player.get_square() - int(self.columns)):
                     self.player.location[1] -= self.square_size
                     self.player.setPos(float(self.player.location[0]), float(self.player.location[1]))
         if event.key() == Qt.Key_S:
             if self.player.location[1] != int(sqrt(len(self.labyrinth.adjMatrix) - 1)) * self.square_size:
-                if self.labyrinth.has_edge(self.get_square(), self.get_square() + int(self.columns)):
+                if self.labyrinth.has_edge(self.player.get_square(), self.player.get_square() + int(self.columns)):
                     self.player.location[1] += self.square_size
                     self.player.setPos(float(self.player.location[0]), float(self.player.location[1]))
         if event.key() == Qt.Key_A:
             if self.player.location[0] != 0:
-                if self.labyrinth.has_edge(self.get_square(), self.get_square() - 1):
+                if self.labyrinth.has_edge(self.player.get_square(), self.player.get_square() - 1):
                     self.player.location[0] -= self.square_size
                     self.player.setPos(float(self.player.location[0]), float(self.player.location[1]))
         if event.key() == Qt.Key_D:
             if self.player.location[0] != int(sqrt(len(self.labyrinth.adjMatrix) - 1)) * self.square_size:
-                if self.labyrinth.has_edge(self.get_square(), self.get_square() + 1):
+                if self.labyrinth.has_edge(self.player.get_square(), self.player.get_square() + 1):
                     self.player.location[0] += self.square_size
                     self.player.setPos(float(self.player.location[0]), float(self.player.location[1]))
-
-    def get_square(self):
-        x = self.player.location[0] / self.square_size
-        y = self.player.location[1] / self.square_size
-        lab_columns = int(sqrt(len(self.labyrinth.adjMatrix)))
-        place = lab_columns * y + x
-        return int(place)
 
