@@ -7,14 +7,14 @@ from Player import Player
 
 
 def main():
-    g = Labyrinth(1000)
+    g = Labyrinth(100)
     g.create_graph()
     g.prims()
 
     global app
     app = QApplication(sys.argv)
     p = Player(30, g)
-    graphics = Graphics(g, p)
+    graphics = Graphics(g, p, 30)
 
     sys.exit(app.exec_())
 

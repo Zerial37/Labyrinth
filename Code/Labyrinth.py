@@ -3,8 +3,6 @@ from math import sqrt
 
 class Labyrinth():
 
-    # Initialize the matrix
-
     def __init__(self, size):
         self.adjMatrix = []
         self.tree = []
@@ -14,9 +12,7 @@ class Labyrinth():
             self.adjMatrix.append([0 for i in range(size)])
         self.size = size
         self.columns = int(sqrt(len(self.adjMatrix)))
-        self.MST = []
 
-    # Add edges
     def create_graph(self):
         for n in range(self.size - 1):
             y = n // self.columns
@@ -32,21 +28,6 @@ class Labyrinth():
         random_number = random.randint(1, 99)
         self.adjMatrix[v1][v2] = random_number
         self.adjMatrix[v2][v1] = random_number
-
-    # Remove edges
-    def remove_edge(self, v1, v2):
-        if self.adjMatrix[v1][v2] == 0:
-            print("No edge between %d and %d" % (v1, v2))
-            return
-        self.adjMatrix[v1][v2] = 0
-        self.adjMatrix[v2][v1] = 0
-
-    def __len__(self):
-        return self.size
-
-    # Print the matrix
-    def print_matrix(self):
-        print(self.tree)
 
     def has_edge(self, v1, v2):
         if v1 < 0 or v2 < 0 or v1 > self.size - 1 or v2 > self.size - 1:

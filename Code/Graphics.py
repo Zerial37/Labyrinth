@@ -2,6 +2,7 @@ from math import sqrt
 
 from PyQt5 import QtWidgets, QtGui
 from PyQt5.Qt import Qt
+from exit import Exit
 
 
 
@@ -13,22 +14,29 @@ Mukana myös paikka napeille, kuten robots.py:ssa
 
 class Graphics(QtWidgets.QMainWindow):
 
-    def __init__(self, labyrinth, player):
+    def __init__(self, labyrinth, player, square_size):
         super().__init__()
         self.setCentralWidget(QtWidgets.QWidget())
         self.horizontal = QtWidgets.QHBoxLayout()
         self.centralWidget().setLayout(self.horizontal)
         self.labyrinth = labyrinth
         self.player = player
-        self.square_size = 30
+        self.square_size = square_size
         self.columns = int(sqrt(len(self.labyrinth.tree)))
 
         self.init_window()
-        self.add_squares()
         self.add_player()
+        self.add_exit()
+        self.add_squares()
+
 
     def add_player(self):
         self.scene.addItem(self.player)
+        self.player.set_location()
+
+    def add_exit(self):
+        ex = Exit(self.square_size, self.labyrinth)
+        self.scene.addItem(ex)
 
     def add_squares(self):
         sum_x = 0
@@ -69,7 +77,7 @@ class Graphics(QtWidgets.QMainWindow):
 
         # Add a scene for drawing 2d objects
         self.scene = QtWidgets.QGraphicsScene()
-        self.scene.setSceneRect(0, 0, 700, 700)
+        self.scene.setSceneRect(0, 0, self.columns * self.square_size, self.columns * self.square_size)
 
         # Add a view for showing the scene
         self.view = QtWidgets.QGraphicsView(self.scene, self)

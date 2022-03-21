@@ -13,8 +13,10 @@ class Player(QtWidgets.QGraphicsPolygonItem):
         self.labyrinth = labyrinth
         brush = QtGui.QBrush(1)  # 1 for even fill
         self.setBrush(brush)
+        self.setZValue(1)
         self.constructTriangleVertices()
         self.location = [0, 0]
+        self.lab_columns = int(sqrt(len(self.labyrinth.tree)))
 
     def constructTriangleVertices(self):
         """
@@ -43,6 +45,11 @@ class Player(QtWidgets.QGraphicsPolygonItem):
     def get_square(self):
         x = self.location[0] / self.square_size
         y = self.location[1] / self.square_size
-        lab_columns = int(sqrt(len(self.labyrinth.adjMatrix)))
-        place = lab_columns * y + x
+        place = self.lab_columns * y + x
         return int(place)
+
+    def set_location(self):
+        self.location[0] = (self.lab_columns // 2) * self.square_size
+        self.location[1] = (self.lab_columns // 2) * self.square_size
+        self.setPos(float(self.location[0]), float(self.location[1]))
+
