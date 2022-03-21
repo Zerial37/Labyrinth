@@ -140,9 +140,11 @@ class Graphics(QtWidgets.QMainWindow):
         if self.player.location == self.ex.location:
             sys.exit(-1)
 
+        """
         if self.player.location in self.stair_loc:
             print(self.stair_loc)
             x = self.stair_loc.index(self.player.location)
             print(self.stair_loc[x + 1])
             self.player.location = self.stair_loc[x]
+        """
 
