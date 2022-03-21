@@ -1,4 +1,5 @@
 from math import sqrt
+import sys
 
 from PyQt5 import QtWidgets, QtGui
 from PyQt5.Qt import Qt
@@ -22,7 +23,8 @@ class Graphics(QtWidgets.QMainWindow):
         self.labyrinth = labyrinth
         self.player = player
         self.square_size = square_size
-        self.columns = int(sqrt(len(self.labyrinth.tree)))
+        self.columns = int(sqrt(self.labyrinth.V))
+        self.ex = Exit(self.square_size, self.labyrinth)
 
         self.init_window()
         self.add_player()
@@ -35,14 +37,13 @@ class Graphics(QtWidgets.QMainWindow):
         self.player.set_location()
 
     def add_exit(self):
-        ex = Exit(self.square_size, self.labyrinth)
-        self.scene.addItem(ex)
+        self.scene.addItem(self.ex)
 
     def add_squares(self):
         sum_x = 0
         sum_y = 0
-        for x in range(int(sqrt(len(self.labyrinth.tree)))):
-            for y in range(int(sqrt(len(self.labyrinth.tree)))):
+        for x in range(self.columns):
+            for y in range(self.columns):
                 item = QtWidgets.QGraphicsRectItem(float(sum_x * self.square_size), float(sum_y * self.square_size),
                                                    float(self.square_size), float(self.square_size))
                 self.scene.addItem(item)
@@ -93,7 +94,7 @@ class Graphics(QtWidgets.QMainWindow):
                     self.player.location[1] -= self.square_size
                     self.player.setPos(float(self.player.location[0]), float(self.player.location[1]))
         if event.key() == Qt.Key_S:
-            if self.player.location[1] != int(sqrt(len(self.labyrinth.tree) - 1)) * self.square_size:
+            if self.player.location[1] != (self.columns - 1) * self.square_size:
                 if self.labyrinth.has_edge(self.player.get_square(), self.player.get_square() + int(self.columns)):
                     self.player.location[1] += self.square_size
                     self.player.setPos(float(self.player.location[0]), float(self.player.location[1]))
@@ -103,8 +104,11 @@ class Graphics(QtWidgets.QMainWindow):
                     self.player.location[0] -= self.square_size
                     self.player.setPos(float(self.player.location[0]), float(self.player.location[1]))
         if event.key() == Qt.Key_D:
-            if self.player.location[0] != int(sqrt(len(self.labyrinth.tree) - 1)) * self.square_size:
+            if self.player.location[0] != (self.columns - 1) * self.square_size:
                 if self.labyrinth.has_edge(self.player.get_square(), self.player.get_square() + 1):
                     self.player.location[0] += self.square_size
                     self.player.setPos(float(self.player.location[0]), float(self.player.location[1]))
+
+        if self.player.location == self.ex.location:
+            sys.exit(-1)
 

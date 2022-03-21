@@ -7,9 +7,9 @@ from Player import Player
 
 
 def main():
-    g = Labyrinth(100)
+    g = Labyrinth(900)
     g.create_graph()
-    g.prims()
+    g.KruskalMST()
 
     global app
     app = QApplication(sys.argv)

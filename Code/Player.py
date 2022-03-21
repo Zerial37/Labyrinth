@@ -16,7 +16,7 @@ class Player(QtWidgets.QGraphicsPolygonItem):
         self.setZValue(1)
         self.constructTriangleVertices()
         self.location = [0, 0]
-        self.lab_columns = int(sqrt(len(self.labyrinth.tree)))
+        self.lab_columns = int(sqrt(self.labyrinth.V))
 
     def constructTriangleVertices(self):
         """
