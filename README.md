@@ -18,7 +18,7 @@ Mutta taustalla on kuitenkin toimiva labyrintti.
  Kyllä.
 
  - Kuinka ohjelma käynnistetään?
- Ajamalla main funktio
+ Ajamalla main funktio.
 labyrintin kokoa voi muuttaa vaihtamalla main funktion ensimäisellä rivillä lähetettävän numeron suuruutta. Numeron neliöjuuren täytyy kuitenkin olla kokonaisluku.
 
  ## Aikataulu
