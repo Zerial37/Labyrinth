@@ -13,7 +13,7 @@ class Player(QtWidgets.QGraphicsPolygonItem):
         self.labyrinth = labyrinth
         brush = QtGui.QBrush(1)  # 1 for even fill
         self.setBrush(brush)
-        self.setZValue(1)
+        self.setZValue(2)
         self.constructTriangleVertices()
         self.location = [0, 0]
         self.lab_columns = int(sqrt(self.labyrinth.V))
