@@ -11,7 +11,6 @@ class Exit(QtWidgets.QGraphicsRectItem):
         self.labyrinth = labyrinth
         self.lab_columns = int(sqrt(self.labyrinth.V))
         self.location = [0, 0]
-        self.setZValue(1)
 
         brush = QtGui.QBrush(1)
         brush.setColor(QtGui.QColor(0, 128, 0))

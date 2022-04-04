@@ -1,38 +1,79 @@
 import random
 from math import sqrt
 
-
-# kruskal from https://www.geeksforgeeks.org/kruskals-minimum-spanning-tree-algorithm-greedy-algo-2/
 class Labyrinth():
     def __init__(self, vertices):
         self.V = vertices  # No. of vertices
-        self.levels = 2
         self.graph = []  # default dictionary
         # to store graph
         self.tree = []
         self.columns = int(sqrt(self.V))
 
     def create_graph(self):
-        for i in range(self.levels):
-            for n in range(self.V):
-                number = random.randint(0, 6)
-                y = n // self.columns
-                x = n % self.columns
-                if x + 1 < self.columns:
-                    self.addEdge(n + (i * self.V), n + (i * self.V) + 1)
-                if y + 1 < self.columns:
-                    self.addEdge(n + (i * self.V), n + (i * self.V) + self.columns)
-                if number == 2:
-                    if n + self.V < self.V * self.levels and i != 0:
-                        self.addEdge(n * i, (n * i) + self.V)
-        print(self.graph)
+        for n in range(self.V - 1):
+            y = n // self.columns
+            x = n % self.columns
+            if x + 1 < self.columns:
+                self.addEdge(n, n + 1)
+            if y + 1 < self.columns:
+                self.addEdge(n, n + self.columns)
+
+        self.add_crossing()
+
+
+    def add_crossing(self):
+        inner = []
+        what_to_pop = []
+        for x in range(self.columns - 2):
+            for y in range(self.columns - 2):
+                c = (x + 1) * self.columns
+                inner.append(c + y + 1)
+
+        for x in range(self.columns):
+            one_or_two = random.randint(1, 2)
+            sint = random.randint(0, len(inner) - 1)
+            int = inner[sint]
+            print(int, one_or_two)
+            own_index = (int * 2) - (int // self.columns)
+            if one_or_two == 1:
+                what_to_pop.append(own_index)
+                what_to_pop.append(own_index - 2)
+                print("What should be popped", self.graph[own_index], self.graph[own_index - 2])
+                self.addEdge(int - 1, int + 1)
+            else:
+                what_to_pop.append(own_index + 1)
+                what_to_pop.append(((int - self.columns) * 2) - ((int - self.columns) // self.columns) + 1)
+                print("What should be popped", self.graph[own_index + 1], self.graph[((int - self.columns) * 2) - ((int - self.columns) // self.columns) + 1])
+                self.addEdge(int - self.columns, int + self.columns)
+
+            for y in range(5):
+                try:
+                    if y == 0:
+                        inner.remove(int)
+                    elif y == 1:
+                        inner.remove(int - 1)
+                    elif y == 2:
+                        inner.remove(int + 1)
+                    elif y == 3:
+                        inner.remove(int - self.columns)
+                    else:
+                        inner.remove(int + self.columns)
+                except ValueError:
+                    pass
+
+        what_to_pop.sort(reverse=True)
+        for z in range(len(what_to_pop)):
+            print("What are we popping", self.graph[what_to_pop[z]])
+            self.graph.pop(what_to_pop[z])
+
+
 
     # function to add an edge to graph
     def addEdge(self, u, v):
         self.graph.append([u, v, random.randint(1, 99)])
 
     def has_edge(self, v1, v2):
-        if v1 < 0 or v2 < 0 or v1 > (self.V * self.levels) - 1 or v2 > (self.V * self.levels) - 1:
+        if v1 < 0 or v2 < 0 or v1 > self.V - 1 or v2 > self.V - 1:
             return False
         for i in range(len(self.tree)):
             u, v, w = self.tree[i]
@@ -88,12 +129,12 @@ class Labyrinth():
         rank = []
 
         # Create V subsets with single elements
-        for node in range(self.V * self.levels):
+        for node in range(self.V):
             parent.append(node)
             rank.append(0)
 
         # Number of edges to be taken is equal to V-1
-        while e < (self.V * self.levels) - 1:
+        while e < self.V - 2:
 
             # Step 2: Pick the smallest edge and increment
             # the index for next iteration
@@ -112,6 +153,7 @@ class Labyrinth():
                 self.union(parent, rank, x, y)
             # Else discard the edge
         print(self.tree)
+
 
     """
     def __init__(self, size):
