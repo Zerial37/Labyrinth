@@ -30,6 +30,7 @@ class Graphics(QtWidgets.QMainWindow):
         self.add_player()
         self.add_exit()
         self.add_squares()
+        self.add_weave()
 
 
     def add_player(self):
@@ -38,6 +39,43 @@ class Graphics(QtWidgets.QMainWindow):
 
     def add_exit(self):
         self.scene.addItem(self.ex)
+
+    def add_weave(self):
+        for z in range(len(self.labyrinth.loc_and_type)):
+            l, t = self.labyrinth.loc_and_type[z]
+            x = l % self.columns
+            y = l // self.columns
+            if t == 1:
+                line = QtWidgets.QGraphicsLineItem(float((x + 1) * self.square_size + 2),
+                                                   float(y * self.square_size + 1),
+                                                   float((x + 1) * self.square_size + 2),
+                                                   float((y + 1) * self.square_size - 1))
+                line.setPen(QtGui.QColor(255, 0, 0))
+                line.setZValue(2)
+                self.scene.addItem(line)
+                line = QtWidgets.QGraphicsLineItem(float(x * self.square_size - 2),
+                                                   float(y * self.square_size + 1),
+                                                   float(x * self.square_size - 2),
+                                                   float((y + 1) * self.square_size - 1))
+                line.setPen(QtGui.QColor(255, 0, 0))
+                line.setZValue(2)
+                self.scene.addItem(line)
+            if t == 2:
+                line = QtWidgets.QGraphicsLineItem(float(x * self.square_size + 1),
+                                                   float((y + 1) * self.square_size + 2),
+                                                   float((x + 1) * self.square_size - 1),
+                                                   float((y + 1) * self.square_size) + 2)
+                line.setPen(QtGui.QColor(255, 0, 0))
+                line.setZValue(2)
+                self.scene.addItem(line)
+                line = QtWidgets.QGraphicsLineItem(float(x * self.square_size + 1),
+                                                   float(y * self.square_size - 2),
+                                                   float((x + 1) * self.square_size - 1),
+                                                   float(y * self.square_size) - 2)
+                line.setPen(QtGui.QColor(255, 0, 0))
+                line.setZValue(2)
+                self.scene.addItem(line)
+
 
     def add_squares(self):
         sum_x = 0

@@ -7,6 +7,7 @@ class Labyrinth():
         self.graph = []  # default dictionary
         # to store graph
         self.tree = []
+        self.loc_and_type = []
         self.columns = int(sqrt(self.V))
 
     def create_graph(self):
@@ -30,21 +31,26 @@ class Labyrinth():
                 inner.append(c + y + 1)
 
         for x in range(self.columns):
+            if len(inner) == 0:
+                break
             one_or_two = random.randint(1, 2)
             sint = random.randint(0, len(inner) - 1)
             int = inner[sint]
             print(int, one_or_two)
+            self.loc_and_type.append([int, one_or_two])
             own_index = (int * 2) - (int // self.columns)
             if one_or_two == 1:
                 what_to_pop.append(own_index)
                 what_to_pop.append(own_index - 2)
                 print("What should be popped", self.graph[own_index], self.graph[own_index - 2])
-                self.addEdge(int - 1, int + 1)
+                #self.addEdge(int - 1, int + 1)
+                self.tree.append([int - 1, int + 1, random.randint(1, 99)])
             else:
                 what_to_pop.append(own_index + 1)
                 what_to_pop.append(((int - self.columns) * 2) - ((int - self.columns) // self.columns) + 1)
                 print("What should be popped", self.graph[own_index + 1], self.graph[((int - self.columns) * 2) - ((int - self.columns) // self.columns) + 1])
-                self.addEdge(int - self.columns, int + self.columns)
+                #self.addEdge(int - self.columns, int + self.columns)
+                self.tree.append([int - self.columns, int + self.columns, random.randint(1, 99)])
 
             for y in range(5):
                 try:
@@ -60,6 +66,8 @@ class Labyrinth():
                         inner.remove(int + self.columns)
                 except ValueError:
                     pass
+            self.V -= 3
+        print(self.V)
 
         what_to_pop.sort(reverse=True)
         for z in range(len(what_to_pop)):
@@ -134,7 +142,7 @@ class Labyrinth():
             rank.append(0)
 
         # Number of edges to be taken is equal to V-1
-        while e < self.V - 2:
+        while e < self.V - 1:
 
             # Step 2: Pick the smallest edge and increment
             # the index for next iteration
