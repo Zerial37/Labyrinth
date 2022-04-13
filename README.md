@@ -43,3 +43,51 @@ primin algoritmin sijasta käytämme kruskalin algoritmia. Tekemäni primin algo
 Täten myös käytössä oleva matriisi muuttui hiukan verrattuna suunnitelman versioon. Nyt rivin kaksi ensimmäistä numeroa kuvaavat linkitettyjä ruutuja ja kolmas linkin painoarvoa.
 Molemmat implementaatiot löytyvät labyrinth luokasta(prim kommentoituna)
 
+## Checkpoint2
+
+## Tämänhetkiset ominaisuudet
+
+Graafisessa ikkunassa pelattava weave labyrintti. Labyrintin kokoa ja tunneleiden määrää voi vaihdella muuttamalla kahta arvoa koodissa. Pelaaja, exit ja liikkuminen toimivat edelleen samalla tavalla kuin aikaisemmin. 
+
+Pelissä on kuitenkin sisäänrakennettuna ansa, monet tunneleiden suuaukoista eivät toimi. Kun kaikki näistä ovat identtisen näköisiä, labyrinteistä tulee yllättävän turhauttavia ja vaikeita ratkaista. Tietenkin kun mahdollisten tunnelien määrää voi säädellä se myös säätelee hiukan vaikeustasoa.
+
+ ## Käyttöohje
+
+ - Voiko ohjelmaa jo ajaa? (kyllä/ei)
+
+ Kyllä.
+
+ - Kuinka ohjelma käynnistetään?
+
+Ajamalla main funktio.
+
+Labyrintin kokoa voi muuttaa vaihtamalla main funktion rivillä 10 lähetettävän numeron suuruutta. Numeron neliöjuuren täytyy kuitenkin olla kokonaisluku.
+
+Tunneleiden määrä voi vaihdella vaihtamalla Labyrinth.py:n rivillä 33 olevan for-loopin iteroinnin määrää. Labyrinteissä on kuitenkin aina raja, kuinka monta tunnelia mahtuu, joten tietyn pisteen jälkeen iteroinnin määrää lisäämällä tunneleita ei tule enään lisää.
+
+ ## Aikataulu
+
+ - Kuinka paljon olet jo käyttänyt aikaa projektiin?
+
+ Koodiin noin 30h ja suunnitelmaan noin 6h
+
+ - Onko ilmennyt muutoksia suunnitelman aikatauluun?
+ 
+ Yhden viikon skippasin muiden kurssien kiireiden takia ja tenttiviikolla olen tehnyt normaalia vähemmän koodia. Loppua kohti voin kuitenkin kiristää tahtia.
+
+ ## Muuta
+
+ - Onko ilmaantunut erityisiä ongelmia?
+
+ Tällä hetkellä kaikki labyrintissä toimii niin kuin pitääkin.
+
+ Weaven toimivuuden kanssa oli aika paljon taisteltavaa. Samalla tuli vahingossa keksittyä labyrintin ansa ominaisuus, kun grafiikka piirsi kaikki tunnelit vaikka algoritmi ei niitä kaikkia toteuttanutkaan.
+
+ - Oletko joutunut tekemään muutoksia suunnitelmaasi?
+
+ Kyllä.
+
+Palasin takaisin weave labyrinttiin, kun tajusin että 3D:tä varten olisi joutunut uudelleenkirjoittamaan paljon koodia joka jo toimi moitteettomasti 2D labyrintissä. Mielestäni valinta oli oikea sillä labyrintti on juuri sellainen kuin halusin.
+
+Seuraavaksi lähden tekemään ratkaisualgoritmiä ja valikkoa. Sekä viimeistelemään työtä.
+
