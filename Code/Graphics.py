@@ -41,40 +41,136 @@ class Graphics(QtWidgets.QMainWindow):
         self.scene.addItem(self.ex)
 
     def add_weave(self):
+        # Here we set up graphics to represent tunnels we iterate through all possible tunnels, but not all of them end
+        # up being actual tunnels
         for z in range(len(self.labyrinth.loc_and_type)):
             l, t = self.labyrinth.loc_and_type[z]
             x = l % self.columns
             y = l // self.columns
+
+            # Tunnels from left to right
             if t == 1:
-                line = QtWidgets.QGraphicsLineItem(float((x + 1) * self.square_size + 2),
+
+                # Right side
+                line = QtWidgets.QGraphicsLineItem(float((x + 1) * self.square_size + 1),
                                                    float(y * self.square_size + 1),
-                                                   float((x + 1) * self.square_size + 2),
-                                                   float((y + 1) * self.square_size - 1))
-                line.setPen(QtGui.QColor(255, 0, 0))
+                                                   float((x + 1) * self.square_size + 1),
+                                                   float((y + 1) * self.square_size) - 1)
+                line.setPen(QtGui.QColor(39, 39, 39))
                 line.setZValue(2)
                 self.scene.addItem(line)
-                line = QtWidgets.QGraphicsLineItem(float(x * self.square_size - 2),
+                line2 = QtWidgets.QGraphicsLineItem(float((x + 1) * self.square_size + 2),
+                                                    float(y * self.square_size + 2),
+                                                    float((x + 1) * self.square_size + 2),
+                                                    float((y + 1) * self.square_size) - 2)
+                line2.setPen(QtGui.QColor(86, 86, 86))
+                line2.setZValue(2)
+                self.scene.addItem(line2)
+                line3 = QtWidgets.QGraphicsLineItem(float((x + 1) * self.square_size + 3),
+                                                    float(y * self.square_size + 3),
+                                                    float((x + 1) * self.square_size + 3),
+                                                    float((y + 1) * self.square_size) - 3)
+                line3.setPen(QtGui.QColor(134, 134, 134))
+                line3.setZValue(2)
+                self.scene.addItem(line3)
+                line4 = QtWidgets.QGraphicsLineItem(float((x + 1) * self.square_size + 4),
+                                                    float(y * self.square_size + 4),
+                                                    float((x + 1) * self.square_size + 4),
+                                                    float((y + 1) * self.square_size) - 4)
+                line4.setPen(QtGui.QColor(182, 182, 182))
+                line4.setZValue(2)
+                self.scene.addItem(line4)
+
+                # Left side
+                line = QtWidgets.QGraphicsLineItem(float(x * self.square_size - 1),
                                                    float(y * self.square_size + 1),
-                                                   float(x * self.square_size - 2),
-                                                   float((y + 1) * self.square_size - 1))
-                line.setPen(QtGui.QColor(255, 0, 0))
+                                                   float(x * self.square_size - 1),
+                                                   float((y + 1) * self.square_size) - 1)
+                line.setPen(QtGui.QColor(39, 39, 39))
                 line.setZValue(2)
                 self.scene.addItem(line)
+                line2 = QtWidgets.QGraphicsLineItem(float(x * self.square_size - 2),
+                                                    float(y * self.square_size + 2),
+                                                    float(x * self.square_size - 2),
+                                                    float((y + 1) * self.square_size) - 2)
+                line2.setPen(QtGui.QColor(86, 86, 86))
+                line2.setZValue(2)
+                self.scene.addItem(line2)
+                line3 = QtWidgets.QGraphicsLineItem(float(x * self.square_size - 3),
+                                                    float(y * self.square_size + 3),
+                                                    float(x * self.square_size - 3),
+                                                    float((y + 1) * self.square_size) - 3)
+                line3.setPen(QtGui.QColor(134, 134, 134))
+                line3.setZValue(2)
+                self.scene.addItem(line3)
+                line4 = QtWidgets.QGraphicsLineItem(float(x * self.square_size - 4),
+                                                    float(y * self.square_size + 4),
+                                                    float(x * self.square_size - 4),
+                                                    float((y + 1) * self.square_size) - 4)
+                line4.setPen(QtGui.QColor(182, 182, 182))
+                line4.setZValue(2)
+                self.scene.addItem(line4)
+
+            # Tunnels from up to bottom
             if t == 2:
+                # Bottom
                 line = QtWidgets.QGraphicsLineItem(float(x * self.square_size + 1),
-                                                   float((y + 1) * self.square_size + 2),
+                                                   float((y + 1) * self.square_size + 1),
                                                    float((x + 1) * self.square_size - 1),
-                                                   float((y + 1) * self.square_size) + 2)
-                line.setPen(QtGui.QColor(255, 0, 0))
+                                                   float((y + 1) * self.square_size) + 1)
+                line.setPen(QtGui.QColor(39, 39, 39))
                 line.setZValue(2)
                 self.scene.addItem(line)
+                line2 = QtWidgets.QGraphicsLineItem(float(x * self.square_size + 2),
+                                                    float((y + 1) * self.square_size + 2),
+                                                    float((x + 1) * self.square_size - 2),
+                                                    float((y + 1) * self.square_size) + 2)
+                line2.setPen(QtGui.QColor(86, 86, 86))
+                line2.setZValue(2)
+                self.scene.addItem(line2)
+                line3 = QtWidgets.QGraphicsLineItem(float(x * self.square_size + 3),
+                                                    float((y + 1) * self.square_size + 3),
+                                                    float((x + 1) * self.square_size - 3),
+                                                    float((y + 1) * self.square_size) + 3)
+                line3.setPen(QtGui.QColor(134, 134, 134))
+                line3.setZValue(2)
+                self.scene.addItem(line3)
+                line4 = QtWidgets.QGraphicsLineItem(float(x * self.square_size + 4),
+                                                    float((y + 1) * self.square_size + 4),
+                                                    float((x + 1) * self.square_size - 4),
+                                                    float((y + 1) * self.square_size) + 4)
+                line4.setPen(QtGui.QColor(182, 182, 182))
+                line4.setZValue(2)
+                self.scene.addItem(line4)
                 line = QtWidgets.QGraphicsLineItem(float(x * self.square_size + 1),
-                                                   float(y * self.square_size - 2),
+                                                   float(y * self.square_size - 1),
                                                    float((x + 1) * self.square_size - 1),
-                                                   float(y * self.square_size) - 2)
-                line.setPen(QtGui.QColor(255, 0, 0))
+                                                   float(y * self.square_size) - 1)
+                # Up
+                line.setPen(QtGui.QColor(39, 39, 39))
                 line.setZValue(2)
                 self.scene.addItem(line)
+                line2 = QtWidgets.QGraphicsLineItem(float(x * self.square_size + 2),
+                                                    float(y * self.square_size - 2),
+                                                    float((x + 1) * self.square_size - 2),
+                                                    float(y * self.square_size) - 2)
+                line2.setPen(QtGui.QColor(86, 86, 86))
+                line2.setZValue(2)
+                self.scene.addItem(line2)
+                line3 = QtWidgets.QGraphicsLineItem(float(x * self.square_size + 3),
+                                                    float(y * self.square_size - 3),
+                                                    float((x + 1) * self.square_size - 3),
+                                                    float(y * self.square_size) - 3)
+                line3.setPen(QtGui.QColor(134, 134, 134))
+                line3.setZValue(2)
+                self.scene.addItem(line3)
+                line4 = QtWidgets.QGraphicsLineItem(float(x * self.square_size + 4),
+                                                    float(y * self.square_size - 4),
+                                                    float((x + 1) * self.square_size - 4),
+                                                    float(y * self.square_size) - 4)
+                line4.setPen(QtGui.QColor(182, 182, 182))
+                line4.setZValue(2)
+                self.scene.addItem(line4)
 
 
     def add_squares(self):

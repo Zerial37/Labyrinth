@@ -30,27 +30,27 @@ class Labyrinth():
                 c = (x + 1) * self.columns
                 inner.append(c + y + 1)
 
-        for x in range(self.columns):
+        for x in range(self.columns * 4):
             if len(inner) == 0:
                 break
             one_or_two = random.randint(1, 2)
             sint = random.randint(0, len(inner) - 1)
             int = inner[sint]
-            print(int, one_or_two)
+            #print(int, one_or_two)
             self.loc_and_type.append([int, one_or_two])
             own_index = (int * 2) - (int // self.columns)
             if one_or_two == 1:
                 what_to_pop.append(own_index)
                 what_to_pop.append(own_index - 2)
-                print("What should be popped", self.graph[own_index], self.graph[own_index - 2])
-                #self.addEdge(int - 1, int + 1)
-                self.tree.append([int - 1, int + 1, random.randint(1, 99)])
+                #print("What should be popped", self.graph[own_index], self.graph[own_index - 2])
+                self.addEdge(int - 1, int + 1)
+                #self.tree.append([int - 1, int + 1, random.randint(1, 99)])
             else:
                 what_to_pop.append(own_index + 1)
                 what_to_pop.append(((int - self.columns) * 2) - ((int - self.columns) // self.columns) + 1)
-                print("What should be popped", self.graph[own_index + 1], self.graph[((int - self.columns) * 2) - ((int - self.columns) // self.columns) + 1])
-                #self.addEdge(int - self.columns, int + self.columns)
-                self.tree.append([int - self.columns, int + self.columns, random.randint(1, 99)])
+                #print("What should be popped", self.graph[own_index + 1], self.graph[((int - self.columns) * 2) - ((int - self.columns) // self.columns) + 1])
+                self.addEdge(int - self.columns, int + self.columns)
+                #self.tree.append([int - self.columns, int + self.columns, random.randint(1, 99)])
 
             for y in range(5):
                 try:
@@ -66,12 +66,12 @@ class Labyrinth():
                         inner.remove(int + self.columns)
                 except ValueError:
                     pass
-            self.V -= 3
-        print(self.V)
+            #self.V -= 3
+        #print(self.V)
 
         what_to_pop.sort(reverse=True)
         for z in range(len(what_to_pop)):
-            print("What are we popping", self.graph[what_to_pop[z]])
+            #print("What are we popping", self.graph[what_to_pop[z]])
             self.graph.pop(what_to_pop[z])
 
 
@@ -91,6 +91,7 @@ class Labyrinth():
 
     # A utility function to find set of an element i
     # (uses path compression technique)
+
     def find(self, parent, i):
         if parent[i] == i:
             return i
@@ -98,6 +99,7 @@ class Labyrinth():
 
     # A function that does union of two sets of x and y
     # (uses union by rank)
+
     def union(self, parent, rank, x, y):
         xroot = self.find(parent, x)
         yroot = self.find(parent, y)
@@ -160,61 +162,4 @@ class Labyrinth():
                 self.tree.append([u, v, w])
                 self.union(parent, rank, x, y)
             # Else discard the edge
-        print(self.tree)
-
-
-    """
-    def __init__(self, size):
-        self.adjMatrix = []
-        self.tree = []
-        for i in range(size):
-            self.tree.append([0 for i in range(size)])
-        for i in range(size):
-            self.adjMatrix.append([0 for i in range(size)])
-        self.size = size
-        self.columns = int(sqrt(len(self.adjMatrix)))
-
-    def create_graph(self):
-        for n in range(self.size - 1):
-            y = n // self.columns
-            x = n % self.columns
-            if x + 1 < self.columns:
-                self.add_edge(n, n + 1)
-            if y + 1 < self.columns:
-                self.add_edge(n, n + self.columns)
-
-    def add_edge(self, v1, v2):
-        if v1 == v2:
-            print("Same vertex %d and %d" % (v1, v2))
-        random_number = random.randint(1, 99)
-        self.adjMatrix[v1][v2] = random_number
-        self.adjMatrix[v2][v1] = random_number
-
-    def has_edge(self, v1, v2):
-        if v1 < 0 or v2 < 0 or v1 > self.size - 1 or v2 > self.size - 1:
-            return False
-        if self.tree[v1][v2] != 0:
-            return True
-        else:
-            return False
-
-
-    def prims(self):
-        visited = [0] * self.columns * self.columns
-        edgeNum = 0
-        visited[0] = True
-        while edgeNum < self.columns * self.columns - 1:
-            min = 999
-            for i in range(self.columns * self.columns):
-                if visited[i]:
-                    for j in range(self.columns * self.columns):
-                        if ((not visited[j]) and self.adjMatrix[i][j]):
-                            if min > self.adjMatrix[i][j]:
-                                min = self.adjMatrix[i][j]
-                                s = i
-                                d = j
-            self.tree[s][d] = min
-            self.tree[d][s] = min
-            visited[d] = True
-            edgeNum += 1
-    """
+        #print(self.tree)

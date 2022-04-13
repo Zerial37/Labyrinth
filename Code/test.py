@@ -5,39 +5,35 @@ from Graphics import Graphics
 from PyQt5.QtWidgets import QApplication
 from Labyrinth import Labyrinth
 from Player import Player
+from exit import Exit
 
 
 class Test(unittest.TestCase):
 
     def setUp(self):
-        self.test_labyrinth = Labyrinth(9)
-        self.test_labyrinth.add_edge(0, 1)
-        self.test_labyrinth.add_edge(0, 3)
-        self.test_labyrinth.add_edge(1, 2)
-        self.test_labyrinth.add_edge(1, 4)
-        self.test_labyrinth.add_edge(2, 5)
-        self.test_labyrinth.add_edge(3, 4)
-        self.test_labyrinth.add_edge(3, 6)
-        self.test_labyrinth.add_edge(4, 5)
-        self.test_labyrinth.add_edge(4, 7)
-        self.test_labyrinth.add_edge(5, 8)
-        self.test_labyrinth.add_edge(6, 7)
-        self.test_labyrinth.add_edge(7, 8)
+        self.g = Labyrinth(100)
+        self.g.create_graph()
+        self.g.KruskalMST()
 
-        global app
-        app = QApplication(sys.argv)
-        self.player = Player(30, self.test_labyrinth)
-        self.graphics = Graphics(self.test_labyrinth, self.player)
+        self.p = Player(30, self.g)
 
-        sys.exit(app.exec_())
+    def test_player_location(self):
+        self.p.set_location()
+        square = self.p.get_square()
 
+        self.assertEqual(55, square, "player should be at square 55")
 
-    def test_player_get_square(self):
-        square = self.player.get_square()
+    def test_exit_location(self):
+        self.ex = Exit(30, self.g)
+        square = self.ex.get_square()
+        value = False
+        p_locations = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 19, 20, 29, 30, 39, 40, 49, 50, 59, 60, 69, 70, 79, 80, 89,
+                       90, 91, 92, 93, 94, 95, 96, 97, 98, 99]
 
-        self.assertEqual(0, square, "player should be at square 0")
+        if square in p_locations:
+            value = True
 
-
+        self.assertTrue(value, "exit should be somewhere around the edges")
 
 
 if __name__ == "__main__":

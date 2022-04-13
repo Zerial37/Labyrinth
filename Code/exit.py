@@ -17,6 +17,12 @@ class Exit(QtWidgets.QGraphicsRectItem):
         self.setBrush(brush)
         self.randomize_location()
 
+    def get_square(self):
+        x = self.location[0] / self.square_size
+        y = self.location[1] / self.square_size
+        place = self.lab_columns * y + x
+        return int(place)
+
     def randomize_location(self):
         numb = random.randint(1, 4)
         y = self.lab_columns - 1
