@@ -30,7 +30,7 @@ class Labyrinth():
                 c = (x + 1) * self.columns
                 inner.append(c + y + 1)
 
-        for x in range(self.columns * 4):
+        for x in range(500):
             if len(inner) == 0:
                 break
             one_or_two = random.randint(1, 2)
@@ -84,7 +84,7 @@ class Labyrinth():
         if v1 < 0 or v2 < 0 or v1 > self.V - 1 or v2 > self.V - 1:
             return False
         for i in range(len(self.tree)):
-            u, v, w = self.tree[i]
+            u, v = self.tree[i]
             if (u == v2 or u == v1) and (v == v1 or v == v2):
                 return True
         return False
@@ -159,7 +159,7 @@ class Labyrinth():
             # for next edge
             if x != y:
                 e = e + 1
-                self.tree.append([u, v, w])
+                self.tree.append([u, v])
                 self.union(parent, rank, x, y)
             # Else discard the edge
         #print(self.tree)

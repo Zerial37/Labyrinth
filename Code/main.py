@@ -4,6 +4,7 @@ from Graphics import Graphics
 from PyQt5.QtWidgets import QApplication
 from Labyrinth import Labyrinth
 from Player import Player
+from solver import Solver
 
 
 def main():
@@ -11,10 +12,12 @@ def main():
     g.create_graph()
     g.KruskalMST()
 
+
     global app
     app = QApplication(sys.argv)
     p = Player(30, g)
     graphics = Graphics(g, p, 30)
+    c = Solver(g.V, g.tree, p, graphics.ex)
 
     sys.exit(app.exec_())
 
