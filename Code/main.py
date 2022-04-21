@@ -7,7 +7,7 @@ from Player import Player
 
 
 def main():
-    g = Labyrinth(9)
+    g = Labyrinth(900)
     g.create_graph()
     g.KruskalMST()
 

@@ -235,6 +235,10 @@ class Graphics(QtWidgets.QMainWindow):
                                                                           self.ex.get_square()))
         self.horizontal.addWidget(self.solver_btn)
 
+        self.save_lab = QtWidgets.QPushButton("Save labyrinth to a file")
+        self.save_lab.clicked.connect(lambda: self.labyrinth.save_to_file())
+        self.horizontal.addWidget(self.save_lab)
+
     def player_update_position(self):
         """
         Updates the position of the player in labyrinth

@@ -1,6 +1,7 @@
 import random
 from math import sqrt
 
+
 class Labyrinth():
     def __init__(self, vertices):
         self.V = vertices  # No. of vertices
@@ -21,6 +22,9 @@ class Labyrinth():
 
         self.add_crossing()
 
+    def save_to_file(self):
+        with open('CS-A1121_Lab.txt', 'w') as file:
+            file.write(str(self.tree))
 
     def add_crossing(self):
         inner = []
@@ -36,21 +40,21 @@ class Labyrinth():
             one_or_two = random.randint(1, 2)
             sint = random.randint(0, len(inner) - 1)
             int = inner[sint]
-            #print(int, one_or_two)
+            # print(int, one_or_two)
             self.loc_and_type.append([int, one_or_two])
             own_index = (int * 2) - (int // self.columns)
             if one_or_two == 1:
                 what_to_pop.append(own_index)
                 what_to_pop.append(own_index - 2)
-                #print("What should be popped", self.graph[own_index], self.graph[own_index - 2])
+                # print("What should be popped", self.graph[own_index], self.graph[own_index - 2])
                 self.addEdge(int - 1, int + 1)
-                #self.tree.append([int - 1, int + 1, random.randint(1, 99)])
+                # self.tree.append([int - 1, int + 1, random.randint(1, 99)])
             else:
                 what_to_pop.append(own_index + 1)
                 what_to_pop.append(((int - self.columns) * 2) - ((int - self.columns) // self.columns) + 1)
-                #print("What should be popped", self.graph[own_index + 1], self.graph[((int - self.columns) * 2) - ((int - self.columns) // self.columns) + 1])
+                # print("What should be popped", self.graph[own_index + 1], self.graph[((int - self.columns) * 2) - ((int - self.columns) // self.columns) + 1])
                 self.addEdge(int - self.columns, int + self.columns)
-                #self.tree.append([int - self.columns, int + self.columns, random.randint(1, 99)])
+                # self.tree.append([int - self.columns, int + self.columns, random.randint(1, 99)])
 
             for y in range(5):
                 try:
@@ -66,15 +70,13 @@ class Labyrinth():
                         inner.remove(int + self.columns)
                 except ValueError:
                     pass
-            #self.V -= 3
-        #print(self.V)
+            # self.V -= 3
+        # print(self.V)
 
         what_to_pop.sort(reverse=True)
         for z in range(len(what_to_pop)):
-            #print("What are we popping", self.graph[what_to_pop[z]])
+            # print("What are we popping", self.graph[what_to_pop[z]])
             self.graph.pop(what_to_pop[z])
-
-
 
     # function to add an edge to graph
     def addEdge(self, u, v):
@@ -121,7 +123,6 @@ class Labyrinth():
     # algorithm
     def KruskalMST(self):
 
-
         # An index variable, used for sorted edges
         i = 0
 
@@ -162,4 +163,4 @@ class Labyrinth():
                 self.tree.append([u, v])
                 self.union(parent, rank, x, y)
             # Else discard the edge
-        #print(self.tree)
+        # print(self.tree)
