@@ -3,7 +3,10 @@ import sys
 
 from PyQt5 import QtWidgets, QtGui
 from PyQt5.Qt import Qt
+from PyQt5.QtWidgets import QApplication
+
 from exit import Exit
+from solver import Solver
 
 
 
@@ -25,12 +28,14 @@ class Graphics(QtWidgets.QMainWindow):
         self.square_size = square_size
         self.columns = int(sqrt(self.labyrinth.V))
         self.ex = Exit(self.square_size, self.labyrinth)
+        self.solver = Solver(self.labyrinth.V, self.labyrinth.tree, self.player, self)
 
         self.init_window()
         self.add_player()
         self.add_exit()
         self.add_squares()
         self.add_weave()
+        self.init_buttons()
 
 
     def add_player(self):
@@ -220,43 +225,60 @@ class Graphics(QtWidgets.QMainWindow):
         self.view.show()
         self.horizontal.addWidget(self.view)
 
+    def init_buttons(self):
+        """
+        Adds button which calls the solver class.
+        Copied from robots.py code
+        """
+        self.solver_btn = QtWidgets.QPushButton("Show solution")
+        self.solver_btn.clicked.connect(lambda: self.solver.printAllPaths(self.player.get_square(),
+                                                                          self.ex.get_square()))
+        self.horizontal.addWidget(self.solver_btn)
+
+    def player_update_position(self):
+        """
+        Updates the position of the player in labyrinth
+        """
+        self.player.setPos(float(self.player.location[0]), float(self.player.location[1]))
+        self.update()
+        QApplication.processEvents()
+
+        if self.player.location == self.ex.location:
+            sys.exit(-1)
+
     def keyPressEvent(self, event):
 
         if event.key() == Qt.Key_W:
             if self.player.location[1] != 0:
                 if self.labyrinth.has_edge(self.player.get_square(), self.player.get_square() - int(self.columns)):
                     self.player.location[1] -= self.square_size
-                    self.player.setPos(float(self.player.location[0]), float(self.player.location[1]))
+                    self.player_update_position()
                 elif self.labyrinth.has_edge(self.player.get_square(),
                                              self.player.get_square() - int(self.columns) - int(self.columns)):
                     self.player.location[1] -= self.square_size * 2
-                    self.player.setPos(float(self.player.location[0]), float(self.player.location[1]))
+                    self.player_update_position()
         if event.key() == Qt.Key_S:
             if self.player.location[1] != (self.columns - 1) * self.square_size:
                 if self.labyrinth.has_edge(self.player.get_square(), self.player.get_square() + int(self.columns)):
                     self.player.location[1] += self.square_size
-                    self.player.setPos(float(self.player.location[0]), float(self.player.location[1]))
+                    self.player_update_position()
                 elif self.labyrinth.has_edge(self.player.get_square(),
                                              self.player.get_square() + int(self.columns) + int(self.columns)):
                     self.player.location[1] += self.square_size * 2
-                    self.player.setPos(float(self.player.location[0]), float(self.player.location[1]))
+                    self.player_update_position()
         if event.key() == Qt.Key_A:
             if self.player.location[0] != 0:
                 if self.labyrinth.has_edge(self.player.get_square(), self.player.get_square() - 1):
                     self.player.location[0] -= self.square_size
-                    self.player.setPos(float(self.player.location[0]), float(self.player.location[1]))
+                    self.player_update_position()
                 elif self.labyrinth.has_edge(self.player.get_square(), self.player.get_square() - 2):
                     self.player.location[0] -= self.square_size * 2
-                    self.player.setPos(float(self.player.location[0]), float(self.player.location[1]))
+                    self.player_update_position()
         if event.key() == Qt.Key_D:
             if self.player.location[0] != (self.columns - 1) * self.square_size:
                 if self.labyrinth.has_edge(self.player.get_square(), self.player.get_square() + 1):
                     self.player.location[0] += self.square_size
-                    self.player.setPos(float(self.player.location[0]), float(self.player.location[1]))
+                    self.player_update_position()
                 elif self.labyrinth.has_edge(self.player.get_square(), self.player.get_square() + 2):
                     self.player.location[0] += self.square_size * 2
-                    self.player.setPos(float(self.player.location[0]), float(self.player.location[1]))
-
-        if self.player.location == self.ex.location:
-            sys.exit(-1)
-
+                    self.player_update_position()

@@ -53,3 +53,9 @@ class Player(QtWidgets.QGraphicsPolygonItem):
         self.location[1] = (self.lab_columns // 2) * self.square_size
         self.setPos(float(self.location[0]), float(self.location[1]))
 
+    def update_location(self, next):
+        y = next // self.lab_columns
+        x = next % self.lab_columns
+        self.location = [self.square_size * x, self.square_size * y]
+
+
