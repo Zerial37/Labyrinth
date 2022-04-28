@@ -42,7 +42,6 @@ class Solver:
         # If current vertex is same as destination, then print
         # current path[]
         if u == d:
-            print(path)
             self.real_path = path.copy()
         else:
             # If current vertex is not destination
@@ -70,4 +69,4 @@ class Solver:
         for i in self.real_path:
             self.player.update_location(i)
             self.graphics.player_update_position()
-            time.sleep(1)
+            time.sleep(0.2)

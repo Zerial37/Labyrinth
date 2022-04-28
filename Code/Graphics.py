@@ -5,8 +5,10 @@ from PyQt5 import QtWidgets, QtGui
 from PyQt5.Qt import Qt
 from PyQt5.QtWidgets import QApplication
 
+from Labyrinth import Labyrinth
 from exit import Exit
 from solver import Solver
+from Player import Player
 
 
 
@@ -18,15 +20,14 @@ Mukana myös paikka napeille, kuten robots.py:ssa
 
 class Graphics(QtWidgets.QMainWindow):
 
-    def __init__(self, labyrinth, player, square_size):
+    def __init__(self, square_size):
         super().__init__()
         self.setCentralWidget(QtWidgets.QWidget())
         self.horizontal = QtWidgets.QHBoxLayout()
         self.centralWidget().setLayout(self.horizontal)
-        self.labyrinth = labyrinth
-        self.player = player
+        self.input_windows()
+        self.player = Player(square_size, self.labyrinth)
         self.square_size = square_size
-        self.columns = int(sqrt(self.labyrinth.V))
         self.ex = Exit(self.square_size, self.labyrinth)
         self.solver = Solver(self.labyrinth.V, self.labyrinth.tree, self.player, self)
 
@@ -50,8 +51,8 @@ class Graphics(QtWidgets.QMainWindow):
         # up being actual tunnels
         for z in range(len(self.labyrinth.loc_and_type)):
             l, t = self.labyrinth.loc_and_type[z]
-            x = l % self.columns
-            y = l // self.columns
+            x = l % self.size
+            y = l // self.size
 
             # Tunnels from left to right
             if t == 1:
@@ -181,31 +182,35 @@ class Graphics(QtWidgets.QMainWindow):
     def add_squares(self):
         sum_x = 0
         sum_y = 0
-        for x in range(self.columns):
-            for y in range(self.columns):
+        for x in range(self.size):
+            for y in range(self.size):
                 item = QtWidgets.QGraphicsRectItem(float(sum_x * self.square_size), float(sum_y * self.square_size),
                                                    float(self.square_size), float(self.square_size))
                 self.scene.addItem(item)
-                place = self.columns * sum_x + sum_y
-                if self.labyrinth.has_edge(place, place + 1):
-                    line = QtWidgets.QGraphicsLineItem(float((sum_y + 1) * self.square_size),
-                                                       float(sum_x * self.square_size + 1),
-                                                       float((sum_y + 1) * self.square_size),
-                                                       float((sum_x + 1) * self.square_size - 1))
-                    line.setPen(QtGui.QColor(255, 255, 255))
-                    line.setZValue(1)
-                    self.scene.addItem(line)
-                if self.labyrinth.has_edge(place, place + self.columns):
-                    line = QtWidgets.QGraphicsLineItem(float(sum_y * self.square_size + 1),
-                                                       float((sum_x + 1) * self.square_size),
-                                                       float((sum_y + 1) * self.square_size - 1),
-                                                       float((sum_x + 1) * self.square_size))
-                    line.setPen(QtGui.QColor(255, 255, 255))
-                    line.setZValue(1)
-                    self.scene.addItem(line)
                 sum_y += 1
             sum_y = 0
             sum_x += 1
+        for i in self.labyrinth.tree:
+            if i[1] - i[0] == 1:
+                y = i[0] // self.size
+                x = i[0] % self.size
+                line = QtWidgets.QGraphicsLineItem(float((x + 1) * self.square_size),
+                                                   float(y * self.square_size + 1),
+                                                   float((x + 1) * self.square_size),
+                                                   float((y + 1) * self.square_size - 1))
+                line.setPen(QtGui.QColor(255, 255, 255))
+                line.setZValue(1)
+                self.scene.addItem(line)
+            elif i[1] - i[0] == self.size:
+                y = i[0] // self.size
+                x = i[0] % self.size
+                line = QtWidgets.QGraphicsLineItem(float(x * self.square_size + 1),
+                                                   float((y + 1) * self.square_size),
+                                                   float((x + 1) * self.square_size - 1),
+                                                   float((y + 1) * self.square_size))
+                line.setPen(QtGui.QColor(255, 255, 255))
+                line.setZValue(1)
+                self.scene.addItem(line)
 
     def init_window(self):
         """
@@ -217,13 +222,28 @@ class Graphics(QtWidgets.QMainWindow):
 
         # Add a scene for drawing 2d objects
         self.scene = QtWidgets.QGraphicsScene()
-        self.scene.setSceneRect(0, 0, self.columns * self.square_size, self.columns * self.square_size)
+        self.scene.setSceneRect(0, 0, self.size * self.square_size, self.size * self.square_size)
 
         # Add a view for showing the scene
         self.view = QtWidgets.QGraphicsView(self.scene, self)
         self.view.adjustSize()
         self.view.show()
         self.horizontal.addWidget(self.view)
+
+    def input_windows(self):
+
+        self.size, done1 = QtWidgets.QInputDialog.getInt(
+            self, 'Input Dialog', 'Select the size of the labyrinth (e.g. typing in 10 means a 10x10 labyrinth):')
+
+        difficulty = ['None', 'A few', 'Many', 'Max']
+        weaves, done2 = QtWidgets.QInputDialog.getItem(
+            self, 'Input Dialog', 'Select the amount of weaves:', difficulty)
+
+        if done1 and done2:
+            self.labyrinth = Labyrinth(self.size * self.size, weaves)
+            self.labyrinth.create_graph()
+            self.labyrinth.KruskalMST()
+
 
     def init_buttons(self):
         """
@@ -254,20 +274,20 @@ class Graphics(QtWidgets.QMainWindow):
 
         if event.key() == Qt.Key_W:
             if self.player.location[1] != 0:
-                if self.labyrinth.has_edge(self.player.get_square(), self.player.get_square() - int(self.columns)):
+                if self.labyrinth.has_edge(self.player.get_square(), self.player.get_square() - int(self.size)):
                     self.player.location[1] -= self.square_size
                     self.player_update_position()
                 elif self.labyrinth.has_edge(self.player.get_square(),
-                                             self.player.get_square() - int(self.columns) - int(self.columns)):
+                                             self.player.get_square() - int(self.size) - int(self.size)):
                     self.player.location[1] -= self.square_size * 2
                     self.player_update_position()
         if event.key() == Qt.Key_S:
-            if self.player.location[1] != (self.columns - 1) * self.square_size:
-                if self.labyrinth.has_edge(self.player.get_square(), self.player.get_square() + int(self.columns)):
+            if self.player.location[1] != (self.size - 1) * self.square_size:
+                if self.labyrinth.has_edge(self.player.get_square(), self.player.get_square() + int(self.size)):
                     self.player.location[1] += self.square_size
                     self.player_update_position()
                 elif self.labyrinth.has_edge(self.player.get_square(),
-                                             self.player.get_square() + int(self.columns) + int(self.columns)):
+                                             self.player.get_square() + int(self.size) + int(self.size)):
                     self.player.location[1] += self.square_size * 2
                     self.player_update_position()
         if event.key() == Qt.Key_A:
@@ -279,7 +299,7 @@ class Graphics(QtWidgets.QMainWindow):
                     self.player.location[0] -= self.square_size * 2
                     self.player_update_position()
         if event.key() == Qt.Key_D:
-            if self.player.location[0] != (self.columns - 1) * self.square_size:
+            if self.player.location[0] != (self.size - 1) * self.square_size:
                 if self.labyrinth.has_edge(self.player.get_square(), self.player.get_square() + 1):
                     self.player.location[0] += self.square_size
                     self.player_update_position()

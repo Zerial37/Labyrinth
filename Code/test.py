@@ -11,7 +11,7 @@ from exit import Exit
 class Test(unittest.TestCase):
 
     def setUp(self):
-        self.g = Labyrinth(100)
+        self.g = Labyrinth(100, "None")
         self.g.create_graph()
         self.g.KruskalMST()
 

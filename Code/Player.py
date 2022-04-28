@@ -37,10 +37,7 @@ class Player(QtWidgets.QGraphicsPolygonItem):
 
         # Set this newly created polygon as this Item's polygon.
         self.setPolygon(triangle)
-
-        # Set the origin of transformations to the center of the triangle.
-        # This makes it easier to rotate this Item.
-        self.setTransformOriginPoint(self.square_size/2, self.square_size/2)
+        self.setBrush(QtGui.QBrush(QtGui.QColor("salmon")))
 
     def get_square(self):
         x = self.location[0] / self.square_size
