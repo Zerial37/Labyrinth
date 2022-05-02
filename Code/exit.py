@@ -1,6 +1,11 @@
-from PyQt5 import QtWidgets, QtGui, QtCore
+from PyQt5 import QtWidgets, QtGui
+
 import random
 from math import sqrt
+
+"""
+A class to represent exit, which is a green tile somewhere around the edges of the labyrinth
+"""
 
 
 class Exit(QtWidgets.QGraphicsRectItem):
@@ -18,12 +23,18 @@ class Exit(QtWidgets.QGraphicsRectItem):
         self.randomize_location()
 
     def get_square(self):
+        """
+        Returns the tile where our exit is at.
+        """
         x = self.location[0] / self.square_size
         y = self.location[1] / self.square_size
         place = self.lab_columns * y + x
         return int(place)
 
     def randomize_location(self):
+        """
+        Sets the location of exit randomly somewhere around the edges of the labyrinth
+        """
         numb = random.randint(1, 4)
         y = self.lab_columns - 1
         x = random.randint(0, y)

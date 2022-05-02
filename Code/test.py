@@ -1,11 +1,13 @@
 import unittest
-import sys
 
-from Graphics import Graphics
-from PyQt5.QtWidgets import QApplication
 from Labyrinth import Labyrinth
 from Player import Player
 from exit import Exit
+
+"""
+Used to test few functions of the code. 
+Not that useful in our case, since most of the problems are easily seen in graphics window.
+"""
 
 
 class Test(unittest.TestCase):
@@ -18,12 +20,18 @@ class Test(unittest.TestCase):
         self.p = Player(30, self.g)
 
     def test_player_location(self):
+        """
+        Test to see if the player is in the correct starting position
+        """
         self.p.set_location()
         square = self.p.get_square()
 
         self.assertEqual(55, square, "player should be at square 55")
 
     def test_exit_location(self):
+        """
+        Test to see if the exit is in the correct position.
+        """
         self.ex = Exit(30, self.g)
         square = self.ex.get_square()
         value = False
