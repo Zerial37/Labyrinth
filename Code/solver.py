@@ -49,6 +49,8 @@ class Solver:
             for i in self.graph[u]:
                 if visited[i] is False:
                     self.printAllPathsUtil(i, d, visited, path)
+                if self.real_path:
+                    return
 
         # Remove current vertex from path[] and mark it as unvisited
         path.pop()
@@ -56,6 +58,8 @@ class Solver:
 
     # Gets all paths from 's' to 'd'
     def printAllPaths(self, s, d):
+
+        self.real_path = []
 
         # Mark all the vertices as not visited
         visited = [False] * self.V

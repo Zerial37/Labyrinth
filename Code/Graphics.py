@@ -410,7 +410,7 @@ class Graphics(QtWidgets.QMainWindow):
         """
         self.size, done1 = QtWidgets.QInputDialog.getInt(
             self, 'Input Dialog', 'Select the size of the labyrinth (e.g. typing in 10 means a 10x10 labyrinth):',
-            1, 1, 2147483647, 1)
+            4, 4, 2147483647, 1)
 
         difficulty = ['None', 'A few', 'Many', 'As many as possible']
         weaves, done2 = QtWidgets.QInputDialog.getItem(

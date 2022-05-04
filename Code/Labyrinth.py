@@ -53,7 +53,7 @@ class Labyrinth:
         elif self.weaves == "A few":
             rounds = self.columns
         elif self.weaves == "Many":
-            rounds = random.randint(self.columns, self.V)
+            rounds = random.randint(self.columns, self.V / 2)
         else:
             rounds = self.V
 
