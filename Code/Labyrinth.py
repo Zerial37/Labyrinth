@@ -85,11 +85,19 @@ class Labyrinth:
             if one_or_two == 1:
                 what_to_pop.append(own_index)
                 what_to_pop.append(own_index - 2)
+                what_to_pop.append(own_index + 1)
+                what_to_pop.append(((int - self.columns) * 2) - ((int - self.columns) // self.columns) + 1)
                 self.addEdge(int - 1, int + 1)
+                self.graph.append([int - self.columns, int, 1])
+                self.graph.append([int, int + self.columns, 1])
             else:
                 what_to_pop.append(own_index + 1)
                 what_to_pop.append(((int - self.columns) * 2) - ((int - self.columns) // self.columns) + 1)
+                what_to_pop.append(own_index)
+                what_to_pop.append(own_index - 2)
                 self.addEdge(int - self.columns, int + self.columns)
+                self.graph.append([int - 1, int, 1])
+                self.graph.append([int, int + 1, 1])
 
             """
             The most time consuming part in our code currently, because it calls remove 5 times per loop.
@@ -123,7 +131,7 @@ class Labyrinth:
         Added random.
         Used to add an edge to graph
         """
-        self.graph.append([u, v, random.randint(1, 99)])
+        self.graph.append([u, v, random.randint(100, 200)])
 
     def has_edge(self, v1, v2):
         """
